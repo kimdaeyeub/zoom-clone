@@ -1,17 +1,7 @@
-import express from "express";
-import http from "http";
-import WebSocket, { WebSocketServer } from "ws";
+## Server.js
 
-const app = express();
-
-app.set("view engine", "pug");
-app.set("views", __dirname + "/views");
-app.use("/public", express.static(__dirname + "/public"));
-// app.get("/*", (_, res) => res.redirect("/"));
-
-app.get("/", (_, res) => {
-  res.render("home");
-});
+```js
+...
 
 const handleListen = () => {
   console.log(`✅서버는 http://localhost:3000 에서 동작중입니다.`);
@@ -26,3 +16,4 @@ const wss = new WebSocketServer({ server });
 
 server.listen(3000, handleListen);
 // http와 WebSocket을 다 이해할 수 있는 서버가 되었다.
+```
