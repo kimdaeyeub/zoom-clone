@@ -14,7 +14,7 @@ app.get("/", (_, res) => {
 app.get("/*", (_, res) => res.redirect("/"));
 
 const handleListen = () => {
-  console.log(`✅서버는 http://localhost:3000 에서 동작중입니다.`);
+  console.log(`✅서버는 http://localhost:8000 에서 동작중입니다.`);
 };
 
 const server = http.createServer(app);
@@ -24,12 +24,18 @@ const wss = new WebSocketServer({ server });
 //websocket을 위한 서버
 // 안에 http서버를 넣음으로서 server위에 wss서버가 쌓인 형식(?)이라는데 잘 모르겠음.
 
+const sockets = [];
+//fakeDatabase
+
 wss.on("connection", (socket) => {
-  socket.on("close", () => {
-    console.log("Disconnected from the Browser❌");
+  sockets.push(socket);
+  //socket에 누군가 연결되면 해당 배열에 추가해둔다.
+  // firefox에서 누군가가 연결되면 sockets에 흔적이 남는다.
+  console.log("✅Connected to Browser");
+  socket.on("message", (message) => {
+    sockets.forEach((aSocket) => aSocket.send(message.toString()));
   });
-  socket.send("Hello!");
 });
 
-server.listen(3000, handleListen);
+server.listen(8000, handleListen);
 // http와 WebSocket을 다 이해할 수 있는 서버가 되었다.
